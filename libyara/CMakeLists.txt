@@ -78,7 +78,7 @@ if(HASH_MODULE)
     if(USE_WINCRYPT)
         target_compile_definitions(libyara PUBLIC HAVE_WINCRYPT)
     else()
-        target_compile_definitions(libyara PUBLIC HAVE_LIBCRYPTO)
+        target_compile_definitions(libyara PUBLIC HAVE_OPENSSL)
     endif()
 endif()
 

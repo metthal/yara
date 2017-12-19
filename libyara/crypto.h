@@ -34,7 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define YR_SHA1_LEN   20
 #define YR_SHA256_LEN 32
 
-#if defined(HAVE_LIBCRYPTO)
+#if defined(HAVE_OPENSSL)
 #include <openssl/crypto.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
@@ -64,7 +64,7 @@ typedef SHA256_CTX yr_sha256_ctx;
 #define yr_sha256_final(digest,ctx) \
  SHA256_Final(digest,ctx)
 
-#elif defined(HAVE_WINCRYPT_H)
+#elif defined(HAVE_WINCRYPT)
 #include <windows.h>
 #include <wincrypt.h>
 
