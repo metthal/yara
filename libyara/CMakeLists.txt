@@ -84,7 +84,7 @@ if(HASH_MODULE)
 endif()
 
 # Link dependencies.
-target_link_libraries(libyara ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(libyara Threads::Threads)
 if(CUCKOO_MODULE)
     target_link_libraries(libyara Jansson)
 endif()
