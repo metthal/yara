@@ -34,7 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define YR_SHA1_LEN   20
 #define YR_SHA256_LEN 32
 
-#if defined(HAVE_OPENSSL)
+#if defined(HAVE_LIBCRYPTO)
 #include <openssl/crypto.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>

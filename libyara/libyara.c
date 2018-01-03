@@ -144,7 +144,7 @@ YR_API int yr_initialize(void)
   CRYPTO_set_id_callback(_thread_id);
   CRYPTO_set_locking_callback(_locking_function);
 
-  #elif defined(HAVE_WINCRYPT_H)
+  #elif defined(HAVE_WINCRYPT)
 
   if (!CryptAcquireContext(&yr_cryptprov, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
     return ERROR_INTERNAL_FATAL_ERROR;
@@ -216,7 +216,7 @@ YR_API int yr_finalize(void)
   CRYPTO_set_id_callback(NULL);
   CRYPTO_set_locking_callback(NULL);
 
-  #elif defined(HAVE_WINCRYPT_H)
+  #elif defined(HAVE_WINCRYPT)
 
   CryptReleaseContext(yr_cryptprov, 0);
 
