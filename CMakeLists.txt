@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.6)
 project(YARA C)
 
+macro(report_module module_name)
+    string(TOUPPER ${module_name} module_name_upper)
+    string(TOLOWER ${module_name} module_name_lower)
+    if(${module_name_upper}_MODULE)
+		message(STATUS "  ${module_name_lower}: ENABLED")
+    else()
+		message(STATUS "  ${module_name_lower}: DISABLED")
+	endif()
+endmacro()
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 option(CUCKOO_MODULE "Enable cuckoo module" OFF)
@@ -22,6 +32,13 @@ endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
+
+message(STATUS "Configurable Modules:")
+report_module(cuckoo)
+report_module(dotnet)
+report_module(hash)
+report_module(magic)
+report_module(macho)
 
 add_subdirectory(deps)
 add_subdirectory(libyara)
