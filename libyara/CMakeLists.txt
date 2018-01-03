@@ -62,6 +62,7 @@ add_module(libyara cuckoo)
 add_module(libyara dotnet)
 add_module(libyara hash)
 add_module(libyara magic)
+add_module(libyara macho)
 
 # Proc files for process scanning. It depends on platform.
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux"

@@ -31,14 +31,14 @@ if(NOT USE_WINCRYPT)
             BUILD_COMMAND ""
             INSTALL_COMMAND ""
         )
-        
+
         get_target_property(SOURCE_DIR openssl-external BINARY_DIR)
 
         add_library(crypto INTERFACE)
         set_target_properties(crypto PROPERTIES INTERFACE_LINK_LIBRARIES "${SOURCE_DIR}/openssl/src/openssl-external/lib64/libcryptoMT.lib")
         target_include_directories(crypto INTERFACE "${SOURCE_DIR}/openssl/src/openssl-external/include64")
         add_dependencies(crypto openssl-external)
-        
+
         # We will fake OpenSSL::Crypto target provided by find_package(OpenSSL)
         # Since namespaced targets are reserved for IMPORTED and ALIAS targets, we created target 'crypto'
         # which we will alias as OpenSSL::Crypto.
