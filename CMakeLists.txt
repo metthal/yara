@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.6)
-project(YARA C)
+project(
+	YARA
+	LANGUAGES C
+	VERSION 3.7.0
+)
 
 macro(report_module module_name)
     string(TOUPPER ${module_name} module_name_upper)
@@ -29,6 +33,7 @@ if(MAGIC_MODULE)
     find_package(Magic REQUIRED)
 endif()
 
+add_definitions(-DPACKAGE_VERSION="${PROJECT_VERSION}")
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
