@@ -55,7 +55,11 @@ list(APPEND LIBYARA_SOURCES
     modules/time.c)
 
 # Library.
-add_library(libyara ${LIBYARA_SOURCES})
+if(YARA_SHARED)
+	add_library(libyara SHARED ${LIBYARA_SOURCES})
+else()
+	add_library(libyara STATIC ${LIBYARA_SOURCES})
+endif()
 
 # Modules which are configrable.
 add_module(libyara cuckoo)
