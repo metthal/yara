@@ -5,6 +5,13 @@ project(
 	VERSION 3.7.0
 )
 
+# Prints status messages during configuration that tells you
+# whether the configurable module is enabled or not.
+#
+# module_name - Module name. Case-insensitive.
+#
+# Example:
+# report_module("cuckoo")
 macro(report_module module_name)
     string(TOUPPER ${module_name} module_name_upper)
     string(TOLOWER ${module_name} module_name_lower)
@@ -15,8 +22,10 @@ macro(report_module module_name)
 	endif()
 endmacro()
 
+### Enable our own custom CMake modules.
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+### Configurable options.
 option(CUCKOO_MODULE "Enable cuckoo module"            OFF)
 option(DOTNET_MODULE "Enable dotnet module"            OFF)
 option(HASH_MODULE   "Enable hash module"              OFF)
@@ -30,16 +39,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     option(USE_WINCRYPT     "Use Windows Cryptography API" OFF)
 endif()
 
-find_package(Threads REQUIRED)
-if(MAGIC_MODULE)
-    find_package(Magic REQUIRED)
-endif()
-
-add_definitions(-DPACKAGE_VERSION="${PROJECT_VERSION}")
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-endif()
-
+# Show all configurable modules and whether they are configured or not.
 message(STATUS "Configurable Modules:")
 report_module(cuckoo)
 report_module(dotnet)
@@ -47,9 +47,22 @@ report_module(hash)
 report_module(magic)
 report_module(macho)
 
+### Requirements.
+find_package(Threads REQUIRED)
+
+### Global definitions.
+# Provide YARA version through PACKAGE_VERSION define.
+add_definitions(-DPACKAGE_VERSION="${PROJECT_VERSION}")
+# Turn off CRT secure warnings for MSVC.
+if(MSVC)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif()
+
+### Subdirectories.
 add_subdirectory(deps)
 add_subdirectory(libyara)
 
+###.yara
 set(YARA_SOURCES
     args.c
     threading.c
@@ -57,6 +70,7 @@ set(YARA_SOURCES
 add_executable(yara ${YARA_SOURCES})
 target_link_libraries(yara libyara)
 
+### yarac
 set(YARAC_SOURCES
     args.c
     threading.c
@@ -64,6 +78,7 @@ set(YARAC_SOURCES
 add_executable(yarac ${YARAC_SOURCES})
 target_link_libraries(yarac libyara)
 
+### Tests.
 if(YARA_TESTS)
 	enable_testing()
 	add_subdirectory(tests)
