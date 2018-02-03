@@ -80,14 +80,20 @@ if(YARA_SHARED)
 else()
 	add_library(libyara STATIC ${LIBYARA_SOURCES})
 endif()
+# Library version.
+set_target_properties(libyara PROPERTIES
+	VERSION ${PROJECT_VERSION}
+	SOVERSION ${PROJECT_VERSION})
 
 # Target 'libyara' would produce liblibyara filename, so override it.
 set_target_properties(libyara PROPERTIES PREFIX "")
 set_target_properties(libyara PROPERTIES OUTPUT_NAME "libyara")
 
 # Bind include directories to 'libyara' target.
-target_include_directories(libyara PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_include_directories(libyara PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(libyara PUBLIC
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>")
 
 ### Modules which are configurable.
 ### We need to do this here because target 'libyara' does not exist
@@ -137,3 +143,15 @@ endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
     target_link_libraries(libyara m)
 endif()
+
+### Installation.
+install(TARGETS libyara
+	EXPORT YARA
+	RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
+	LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib"
+	ARCHIVE DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include"
+	DESTINATION "${CMAKE_INSTALL_PREFIX}"
+	FILES_MATCHING PATTERN "*.h")
+install(EXPORT YARA
+	DESTINATION "${CMAKE_INSTALL_PREFIX}/share/yara")

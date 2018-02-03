@@ -1,7 +1,5 @@
 if(NOT USE_WINCRYPT)
-    if(NOT DOWNLOAD_OPENSSL)
-        find_package(OpenSSL REQUIRED)
-    else()
+	if(DOWNLOAD_OPENSSL)
         include(ExternalProject)
 
         if(MSVC_VERSION GREATER_EQUAL 1910 AND MSVC_VERSION LESS_EQUAL 1919)

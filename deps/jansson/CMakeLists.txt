@@ -1,6 +1,4 @@
-if(NOT DOWNLOAD_JANSSON)
-    find_package(Jansson REQUIRED)
-else()
+if(DOWNLOAD_JANSSON)
     include(ExternalProject)
 
 	set(JANSSON_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/jansson-install")

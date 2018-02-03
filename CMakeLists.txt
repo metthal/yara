@@ -26,13 +26,14 @@ endmacro()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 ### Configurable options.
+option(YARA_TOOLS    "Build yara & yarac tools"        ON)
+option(YARA_SHARED   "Build libyara as shared library" OFF)
+option(YARA_TESTS    "Build tests"                     OFF)
 option(CUCKOO_MODULE "Enable cuckoo module"            OFF)
 option(DOTNET_MODULE "Enable dotnet module"            OFF)
 option(HASH_MODULE   "Enable hash module"              OFF)
 option(MAGIC_MODULE  "Enable magic module"             OFF)
 option(MACHO_MODULE  "Enable macho module"             OFF)
-option(YARA_SHARED   "Build libyara as shared library" OFF)
-option(YARA_TESTS    "Build tests"                     OFF)
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     option(DOWNLOAD_JANSSON "Download Jansson library" ON)
     option(DOWNLOAD_OPENSSL "Download OpenSSL library" ON)
@@ -49,6 +50,15 @@ report_module(macho)
 
 ### Requirements.
 find_package(Threads REQUIRED)
+if(CUCKOO_MODULE AND NOT DOWNLOAD_JANSSON)
+	find_package(Jansson REQUIRED)
+endif()
+if(HASH_MODULE AND NOT DOWNLOAD_OPENSSL AND NOT USE_WINCRYPT)
+	find_package(OpenSSL REQUIRED)
+endif()
+if(MAGIC_MODULE)
+    find_package(Magic REQUIRED)
+endif()
 
 ### Global definitions.
 # Provide YARA version through PACKAGE_VERSION define.
@@ -62,21 +72,29 @@ endif()
 add_subdirectory(deps)
 add_subdirectory(libyara)
 
-###.yara
-set(YARA_SOURCES
-    args.c
-    threading.c
-    yara.c)
-add_executable(yara ${YARA_SOURCES})
-target_link_libraries(yara libyara)
+### Tools.
+if(YARA_TOOLS)
+	# yara
+	set(YARA_SOURCES
+		args.c
+		threading.c
+		yara.c)
+	add_executable(yara ${YARA_SOURCES})
+	target_link_libraries(yara libyara)
+	set_target_properties(yara PROPERTIES VERSION ${PROJECT_VERSION})
 
-### yarac
-set(YARAC_SOURCES
-    args.c
-    threading.c
-    yarac.c)
-add_executable(yarac ${YARAC_SOURCES})
-target_link_libraries(yarac libyara)
+	# yarac
+	set(YARAC_SOURCES
+		args.c
+		threading.c
+		yarac.c)
+	add_executable(yarac ${YARAC_SOURCES})
+	target_link_libraries(yarac libyara)
+	set_target_properties(yarac PROPERTIES VERSION ${PROJECT_VERSION})
+
+	install(TARGETS yara yarac
+		RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+endif()
 
 ### Tests.
 if(YARA_TESTS)
