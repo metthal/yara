@@ -144,6 +144,11 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
     target_link_libraries(libyara m)
 endif()
 
+### Configuration for pkg-config.
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/yara.pc.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/yara.pc"
+	@ONLY)
+
 ### Installation.
 install(TARGETS libyara
 	EXPORT YARA
@@ -155,3 +160,5 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include"
 	FILES_MATCHING PATTERN "*.h")
 install(EXPORT YARA
 	DESTINATION "${CMAKE_INSTALL_PREFIX}/share/yara")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/yara.pc"
+	DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pkgconfig")
