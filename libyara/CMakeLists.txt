@@ -110,6 +110,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux"
    OR CMAKE_SYSTEM_NAME STREQUAL "FreeBSD"
    OR CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
     add_proc(libyara ${CMAKE_SYSTEM_NAME})
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	add_proc(libyara "mach")
 else()
     add_proc(libyara "none")
 endif()
