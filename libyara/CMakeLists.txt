@@ -60,10 +60,14 @@ set(LIBYARA_SOURCES
     rules.c
     scan.c
     sizedstr.c
-    stopwatch.c
     stream.c
     strutils.c
     threading.c)
+
+# Stopwatch is needed only when profiling is enabled.
+if(YARA_PROFILING)
+	list(APPEND LIBYARA_SOURCES stopwatch.c)
+endif()
 
 ### Modules that are always built.
 list(APPEND LIBYARA_SOURCES
