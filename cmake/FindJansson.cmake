@@ -8,6 +8,9 @@
 # JANSSON_INCLUDE_DIR - Jansson include directory.
 # JANSSON_LIBRARIES - Jansson library files.
 # JANSSON_VERSION - Version of Jansson library.
+#
+# Hint variables:
+# JANSSON_ROOT_DIR - Root directory of jansson (contains include and lib directories)
 
 if(UNIX)
     find_package(PkgConfig QUIET)
