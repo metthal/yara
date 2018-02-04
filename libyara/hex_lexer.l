@@ -80,8 +80,6 @@ with noyywrap then we can remove this pragma.
 %option yylineno
 %option prefix="hex_yy"
 
-%option outfile="lex.yy.c"
-
 %option verbose
 %option warn
 

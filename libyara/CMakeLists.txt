@@ -33,7 +33,39 @@ macro(add_proc target platform)
     target_sources(${target} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/proc/${platform_lower}.c")
 endmacro()
 
-### Sources files that are always built.
+### Source files.
+# Setup flex/bison related files. If flex & bison are present, then use them.
+# Otherwise just use pregenerated files.
+if(FLEX_BISON_INSTALLED)
+	set(LEXER_PATH "${CMAKE_CURRENT_BINARY_DIR}/lexer.c")
+	set(GRAMMAR_PATH "${CMAKE_CURRENT_BINARY_DIR}/grammar.c")
+	FLEX_TARGET(lexer "${CMAKE_CURRENT_SOURCE_DIR}/lexer.l" "${LEXER_PATH}")
+	BISON_TARGET(grammar "${CMAKE_CURRENT_SOURCE_DIR}/grammar.y" "${GRAMMAR_PATH}")
+	ADD_FLEX_BISON_DEPENDENCY(lexer grammar)
+
+	set(HEX_LEXER_PATH "${CMAKE_CURRENT_BINARY_DIR}/hex_lexer.c")
+	set(HEX_GRAMMAR_PATH "${CMAKE_CURRENT_BINARY_DIR}/hex_grammar.c")
+	FLEX_TARGET(hex_lexer "${CMAKE_CURRENT_SOURCE_DIR}/hex_lexer.l" "${HEX_LEXER_PATH}")
+	BISON_TARGET(hex_grammar "${CMAKE_CURRENT_SOURCE_DIR}/hex_grammar.y" "${HEX_GRAMMAR_PATH}")
+	ADD_FLEX_BISON_DEPENDENCY(hex_lexer hex_grammar)
+
+	set(RE_LEXER_PATH "${CMAKE_CURRENT_BINARY_DIR}/re_lexer.c")
+	set(RE_GRAMMAR_PATH "${CMAKE_CURRENT_BINARY_DIR}/re_grammar.c")
+	FLEX_TARGET(re_lexer "${CMAKE_CURRENT_SOURCE_DIR}/re_lexer.l" "${RE_LEXER_PATH}")
+	BISON_TARGET(re_grammar "${CMAKE_CURRENT_SOURCE_DIR}/re_grammar.y" "${RE_GRAMMAR_PATH}")
+	ADD_FLEX_BISON_DEPENDENCY(re_lexer re_grammar)
+else()
+	set(LEXER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lexer.c")
+	set(GRAMMAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/grammar.c")
+
+	set(HEX_LEXER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hex_lexer.c")
+	set(HEX_GRAMMAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hex_grammar.c")
+
+	set(RE_LEXER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/re_lexer.c")
+	set(RE_GRAMMAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/re_grammar.c")
+endif()
+
+# Sources files that are always built.
 set(LIBYARA_SOURCES
     ahocorasick.c
     arena.c
@@ -43,11 +75,7 @@ set(LIBYARA_SOURCES
     exec.c
     exefiles.c
     filemap.c
-    grammar.c
     hash.c
-    hex_grammar.c
-    hex_lexer.c
-    lexer.c
     libyara.c
     mem.c
     modules.c
@@ -55,14 +83,18 @@ set(LIBYARA_SOURCES
     parser.c
     proc.c
     re.c
-    re_grammar.c
-    re_lexer.c
     rules.c
     scan.c
     sizedstr.c
     stream.c
     strutils.c
-    threading.c)
+    threading.c
+	${LEXER_PATH}
+	${GRAMMAR_PATH}
+	${HEX_LEXER_PATH}
+	${HEX_GRAMMAR_PATH}
+	${RE_LEXER_PATH}
+	${RE_GRAMMAR_PATH})
 
 # Stopwatch is needed only when profiling is enabled.
 if(YARA_PROFILING)
@@ -94,6 +126,8 @@ set_target_properties(libyara PROPERTIES PREFIX "")
 set_target_properties(libyara PROPERTIES OUTPUT_NAME "libyara")
 
 # Bind include directories to 'libyara' target.
+# Binary directory needs to be first because of pregenerated bison headers.
+target_include_directories(libyara PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_include_directories(libyara PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(libyara PUBLIC
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"

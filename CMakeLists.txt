@@ -51,6 +51,11 @@ report_module(macho)
 
 ### Requirements.
 find_package(Threads REQUIRED)
+find_package(FLEX 2.6)
+find_package(BISON 3.0)
+if(FLEX_FOUND AND BISON_FOUND)
+	set(FLEX_BISON_INSTALLED 1)
+endif()
 if(CUCKOO_MODULE AND NOT DOWNLOAD_JANSSON)
 	find_package(Jansson REQUIRED)
 endif()
