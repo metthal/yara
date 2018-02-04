@@ -37,32 +37,38 @@ endmacro()
 # Setup flex/bison related files. If flex & bison are present, then use them.
 # Otherwise just use pregenerated files.
 if(FLEX_BISON_INSTALLED)
-	set(LEXER_PATH "${CMAKE_CURRENT_BINARY_DIR}/lexer.c")
-	set(GRAMMAR_PATH "${CMAKE_CURRENT_BINARY_DIR}/grammar.c")
-	FLEX_TARGET(lexer "${CMAKE_CURRENT_SOURCE_DIR}/lexer.l" "${LEXER_PATH}")
-	BISON_TARGET(grammar "${CMAKE_CURRENT_SOURCE_DIR}/grammar.y" "${GRAMMAR_PATH}")
+	set(LEXER_C "${CMAKE_CURRENT_BINARY_DIR}/lexer.c")
+	set(GRAMMAR_C "${CMAKE_CURRENT_BINARY_DIR}/grammar.c")
+	set(GRAMMAR_H "${CMAKE_CURRENT_BINARY_DIR}/grammar.h")
+	FLEX_TARGET(lexer "${CMAKE_CURRENT_SOURCE_DIR}/lexer.l" "${LEXER_C}")
+	BISON_TARGET(grammar "${CMAKE_CURRENT_SOURCE_DIR}/grammar.y" "${GRAMMAR_C}")
 	ADD_FLEX_BISON_DEPENDENCY(lexer grammar)
 
-	set(HEX_LEXER_PATH "${CMAKE_CURRENT_BINARY_DIR}/hex_lexer.c")
-	set(HEX_GRAMMAR_PATH "${CMAKE_CURRENT_BINARY_DIR}/hex_grammar.c")
-	FLEX_TARGET(hex_lexer "${CMAKE_CURRENT_SOURCE_DIR}/hex_lexer.l" "${HEX_LEXER_PATH}")
-	BISON_TARGET(hex_grammar "${CMAKE_CURRENT_SOURCE_DIR}/hex_grammar.y" "${HEX_GRAMMAR_PATH}")
+	set(HEX_LEXER_C "${CMAKE_CURRENT_BINARY_DIR}/hex_lexer.c")
+	set(HEX_GRAMMAR_C "${CMAKE_CURRENT_BINARY_DIR}/hex_grammar.c")
+	set(HEX_GRAMMAR_H "${CMAKE_CURRENT_BINARY_DIR}/hex_grammar.h")
+	FLEX_TARGET(hex_lexer "${CMAKE_CURRENT_SOURCE_DIR}/hex_lexer.l" "${HEX_LEXER_C}")
+	BISON_TARGET(hex_grammar "${CMAKE_CURRENT_SOURCE_DIR}/hex_grammar.y" "${HEX_GRAMMAR_C}")
 	ADD_FLEX_BISON_DEPENDENCY(hex_lexer hex_grammar)
 
-	set(RE_LEXER_PATH "${CMAKE_CURRENT_BINARY_DIR}/re_lexer.c")
-	set(RE_GRAMMAR_PATH "${CMAKE_CURRENT_BINARY_DIR}/re_grammar.c")
-	FLEX_TARGET(re_lexer "${CMAKE_CURRENT_SOURCE_DIR}/re_lexer.l" "${RE_LEXER_PATH}")
-	BISON_TARGET(re_grammar "${CMAKE_CURRENT_SOURCE_DIR}/re_grammar.y" "${RE_GRAMMAR_PATH}")
+	set(RE_LEXER_C "${CMAKE_CURRENT_BINARY_DIR}/re_lexer.c")
+	set(RE_GRAMMAR_C "${CMAKE_CURRENT_BINARY_DIR}/re_grammar.c")
+	set(RE_GRAMMAR_H "${CMAKE_CURRENT_BINARY_DIR}/re_grammar.h")
+	FLEX_TARGET(re_lexer "${CMAKE_CURRENT_SOURCE_DIR}/re_lexer.l" "${RE_LEXER_C}")
+	BISON_TARGET(re_grammar "${CMAKE_CURRENT_SOURCE_DIR}/re_grammar.y" "${RE_GRAMMAR_C}")
 	ADD_FLEX_BISON_DEPENDENCY(re_lexer re_grammar)
 else()
-	set(LEXER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lexer.c")
-	set(GRAMMAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/grammar.c")
+	set(LEXER_C "${CMAKE_CURRENT_SOURCE_DIR}/lexer.c")
+	set(GRAMMAR_C "${CMAKE_CURRENT_SOURCE_DIR}/grammar.c")
+	set(GRAMMAR_H "${CMAKE_CURRENT_SOURCE_DIR}/grammar.h")
 
-	set(HEX_LEXER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hex_lexer.c")
-	set(HEX_GRAMMAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hex_grammar.c")
+	set(HEX_LEXER_C "${CMAKE_CURRENT_SOURCE_DIR}/hex_lexer.c")
+	set(HEX_GRAMMAR_C "${CMAKE_CURRENT_SOURCE_DIR}/hex_grammar.c")
+	set(HEX_GRAMMAR_H "${CMAKE_CURRENT_SOURCE_DIR}/hex_grammar.h")
 
-	set(RE_LEXER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/re_lexer.c")
-	set(RE_GRAMMAR_PATH "${CMAKE_CURRENT_SOURCE_DIR}/re_grammar.c")
+	set(RE_LEXER_C "${CMAKE_CURRENT_SOURCE_DIR}/re_lexer.c")
+	set(RE_GRAMMAR_C "${CMAKE_CURRENT_SOURCE_DIR}/re_grammar.c")
+	set(RE_GRAMMAR_H "${CMAKE_CURRENT_SOURCE_DIR}/re_grammar.h")
 endif()
 
 # Sources files that are always built.
@@ -89,12 +95,12 @@ set(LIBYARA_SOURCES
     stream.c
     strutils.c
     threading.c
-	${LEXER_PATH}
-	${GRAMMAR_PATH}
-	${HEX_LEXER_PATH}
-	${HEX_GRAMMAR_PATH}
-	${RE_LEXER_PATH}
-	${RE_GRAMMAR_PATH})
+	${LEXER_C}
+	${GRAMMAR_C}
+	${HEX_LEXER_C}
+	${HEX_GRAMMAR_C}
+	${RE_LEXER_C}
+	${RE_GRAMMAR_C})
 
 # Stopwatch is needed only when profiling is enabled.
 if(YARA_PROFILING)
@@ -198,7 +204,12 @@ install(TARGETS libyara
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include"
 	DESTINATION "${CMAKE_INSTALL_PREFIX}"
 	FILES_MATCHING PATTERN "*.h")
-install(EXPORT YARA
-	DESTINATION "${CMAKE_INSTALL_PREFIX}/share/yara")
+install(FILES
+	"${GRAMMAR_H}"
+	"${HEX_GRAMMAR_H}"
+	"${RE_GRAMMAR_H}"
+	DESTINATION "${CMAKE_INSTALL_PREFIX}/include")
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/yara.pc"
 	DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pkgconfig")
+install(EXPORT YARA
+	DESTINATION "${CMAKE_INSTALL_PREFIX}/share/yara")
