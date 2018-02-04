@@ -1616,7 +1616,7 @@ define_function(exports_ordinal)
 
 #if defined(HAVE_LIBCRYPTO) || \
     defined(HAVE_WINCRYPT) || \
-    defined(HAVE_COMMONCRYPTO_COMMONCRYPTO_H)
+    defined(HAVE_COMMONCRYPTO)
 
 //
 // Generate an import hash:

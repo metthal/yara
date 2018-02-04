@@ -104,7 +104,7 @@ typedef HCRYPTHASH yr_sha256_ctx;
   CryptDestroyHash(*ctx);                               \
 }
 
-#elif defined(HAVE_COMMONCRYPTO_COMMONCRYPTO_H)
+#elif defined(HAVE_COMMONCRYPTO)
 #include <CommonCrypto/CommonDigest.h>
 
 typedef CC_MD5_CTX yr_md5_ctx;

@@ -78,8 +78,8 @@ int main(int argc, char** argv)
       "tests/data/tiny");
 
   #if defined(HAVE_LIBCRYPTO) || \
-      defined(HAVE_WINCRYPT_H) || \
-      defined(HAVE_COMMONCRYPTO_COMMONCRYPTO_H)
+      defined(HAVE_WINCRYPT) || \
+      defined(HAVE_COMMONCRYPTO)
 
   assert_true_rule_file(
       "import \"pe\" \
