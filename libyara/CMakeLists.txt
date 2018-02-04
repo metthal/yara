@@ -179,7 +179,7 @@ if(CUCKOO_MODULE)
 endif()
 # Hash needs OpenSSL if WinCrypt is not used.
 if(HASH_MODULE)
-    if(NOT USE_WINCRYPT)
+	if(NOT USE_WINCRYPT AND NOT USE_COMMONCRYPTO)
         target_link_libraries(libyara OpenSSL::Crypto)
     endif()
 endif()
