@@ -52,6 +52,8 @@ report_module(magic)
 report_module(macho)
 
 ### Requirements.
+include(GNUInstallDirs)
+include(FindUnixCommands)
 find_package(Threads REQUIRED)
 find_package(FLEX 2.6)
 find_package(BISON 3.0)
@@ -105,7 +107,16 @@ if(YARA_TOOLS)
 	set_target_properties(yarac PROPERTIES VERSION ${PROJECT_VERSION})
 
 	install(TARGETS yara yarac
-		RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+		RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
+	if(NOT MSVC)
+		install(CODE
+			"message(STATUS \"Installing man pages...\")
+			execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/share/man/man1)
+			execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/yara.man ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_MANDIR}/man1/yara.1)
+			execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/yarac.man ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_MANDIR}/man1/yarac.1)
+			execute_process(COMMAND ${GZIP} ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_MANDIR}/man1/yara.1)
+			execute_process(COMMAND ${GZIP} ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_MANDIR}/man1/yarac.1)")
+	endif()
 endif()
 
 ### Tests.
