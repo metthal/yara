@@ -137,7 +137,7 @@ target_include_directories(libyara PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_include_directories(libyara PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(libyara PUBLIC
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>")
+	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>")
 
 ### Modules which are configurable.
 ### We need to do this here because target 'libyara' does not exist
@@ -172,25 +172,38 @@ if(HASH_MODULE)
 endif()
 
 ### Link dependencies.
-target_link_libraries(libyara Threads::Threads)
+set(LIBYARA_REQUIRES_PRIVATE "")
+set(LIBYARA_LIBS_PRIVATE "")
+
 # Cuckoo needs Jansson.
 if(CUCKOO_MODULE)
     target_link_libraries(libyara Jansson)
+	set(LIBYARA_REQUIRES_PRIVATE "${LIBYARA_REQUIRES_PRIVATE} jansson")
 endif()
+
 # Hash needs OpenSSL if WinCrypt is not used.
 if(HASH_MODULE)
 	if(NOT USE_WINCRYPT AND NOT USE_COMMONCRYPTO)
         target_link_libraries(libyara OpenSSL::Crypto)
+		set(LIBYARA_REQUIRES_PRIVATE "${LIBYARA_REQUIRES_PRIVATE} libcrypto")
     endif()
 endif()
+
 # Magic needs libmagic.
 if(MAGIC_MODULE)
     target_link_libraries(libyara Magic)
+	set(LIBYARA_LIBS_PRIVATE "${LIBYARA_LIBS_PRIVATE} -lmagic")
 endif()
+
 # GCC and Clang needs  to link against math library.
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
     target_link_libraries(libyara m)
+	set(LIBYARA_LIBS_PRIVATE "${LIBYARA_LIBS_PRIVATE} -lm")
 endif()
+
+# Threads (pthread on Unix)
+target_link_libraries(libyara Threads::Threads)
+set(LIBYARA_LIBS_PRIVATE "${LIBYARA_LIBS_PRIVATE} -lpthread")
 
 ### Configuration for pkg-config.
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/yara.pc.in"
