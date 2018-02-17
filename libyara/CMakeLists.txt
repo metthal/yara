@@ -111,6 +111,7 @@ endif()
 list(APPEND LIBYARA_SOURCES
     modules/elf.c
     modules/math.c
+    modules/macho.c
     modules/pe.c
     modules/pe_utils.c
     modules/tests.c
@@ -146,7 +147,6 @@ add_module(libyara cuckoo)
 add_module(libyara dotnet)
 add_module(libyara hash)
 add_module(libyara magic)
-add_module(libyara macho)
 
 ### Proc files for process scanning. It depends on platform.
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux"

@@ -2,6 +2,7 @@ MODULE(tests)
 MODULE(pe)
 MODULE(elf)
 MODULE(math)
+MODULE(macho)
 MODULE(time)
 
 #ifdef DOTNET_MODULE
@@ -18,8 +19,4 @@ MODULE(magic)
 
 #ifdef HASH_MODULE
 MODULE(hash)
-#endif
-
-#ifdef MACHO_MODULE
-MODULE(macho)
 #endif
