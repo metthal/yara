@@ -164,6 +164,13 @@ if(HASH_MODULE)
 	endif()
 endif()
 
+# This should set 'off_t' type to the correct size according to the compiler (64-bit/32-bit)
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+	target_compile_definitions(libyara PUBLIC _FILE_OFFSET_BITS=64)
+else()
+	target_compile_definitions(libyara PUBLIC _FILE_OFFSET_BITS=32)
+endif()
+
 if(MAGIC_MODULE)
 	target_link_libraries(libyara Magic::Magic)
 endif()
