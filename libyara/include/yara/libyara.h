@@ -31,24 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define YR_LIBYARA_H
 
 #include <yara/utils.h>
-
-#define YR_MAJOR_VERSION   3
-#define YR_MINOR_VERSION   9
-#define YR_MICRO_VERSION   0
-
-#define version_str(s) _version_str(s)
-#define _version_str(s) #s
-
-// Version as a string
-#define YR_VERSION version_str(YR_MAJOR_VERSION) \
-    "." version_str(YR_MINOR_VERSION) \
-    "." version_str(YR_MICRO_VERSION)
-
-// Version as a single 4-byte hex number, e.g. 0x030401 == 3.4.1.
-#define YR_VERSION_HEX ((YR_MAJOR_VERSION << 16) | \
-    (YR_MINOR_VERSION << 8) | \
-    (YR_MICRO_VERSION << 0))
-
+#include <yara/version.h>
 
 // Enumerated type listing configuration options
 typedef enum _YR_CONFIG_NAME

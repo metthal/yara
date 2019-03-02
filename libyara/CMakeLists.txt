@@ -132,6 +132,9 @@ set_target_properties(libyara PROPERTIES OUTPUT_NAME "libyara")
 target_include_directories(libyara PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_include_directories(libyara PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(libyara PUBLIC
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
+)
+target_include_directories(libyara PUBLIC
 	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
 	"$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>"
 )
@@ -144,6 +147,10 @@ endif()
 
 if(CUCKOO_MODULE)
 	target_link_libraries(libyara Jansson::Jansson)
+endif()
+
+if(DEX_MODULE)
+	target_compile_definitions(libyara PUBLIC DEBUG_DEX_MODULE)
 endif()
 
 if(HASH_MODULE)
@@ -182,6 +189,12 @@ if(YARA_CPU_PROFILER)
 endif()
 
 configure_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/yara/version.h.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/include/yara/version.h"
+	@ONLY
+)
+
+configure_file(
 	"${CMAKE_CURRENT_SOURCE_DIR}/yara.pc.in"
 	"${CMAKE_CURRENT_BINARY_DIR}/yara.pc"
 	@ONLY
@@ -190,7 +203,12 @@ configure_file(
 # Headers.
 set(MAIN_LIBYARA_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/include/yara.h")
 file(GLOB_RECURSE LIBYARA_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/yara/*.h")
-list(APPEND LIBYARA_HEADERS "${grammar_H}" "${hex_grammar_H}" "${re_grammar_H}")
+list(APPEND LIBYARA_HEADERS
+	"${grammar_H}"
+	"${hex_grammar_H}"
+	"${re_grammar_H}"
+	"${CMAKE_CURRENT_BINARY_DIR}/include/yara/version.h"
+)
 
 install(
 	TARGETS libyara
@@ -205,7 +223,7 @@ install(
 )
 install(
 	FILES ${LIBYARA_HEADERS}
-	DESTINATION "${CMAKE_INSTALL_PREFIX}/yara"
+	DESTINATION "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/yara"
 )
 install(
 	FILES "${CMAKE_CURRENT_BINARY_DIR}/yara.pc"
@@ -213,7 +231,7 @@ install(
 )
 install(
 	EXPORT yara
-	DESTINATION "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/yara"
+	DESTINATION "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/cmake"
 )
 #get_target_property(LIBS libyara LINK_LIBRARIES)
 #foreach(LIB ${LIBS})

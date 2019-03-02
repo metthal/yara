@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016. The YARA Authors. All Rights Reserved.
+Copyright (c) 2014. The YARA Authors. All Rights Reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -27,13 +27,24 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <yara.h>
-#include <strings.h>
+#ifndef YR_VERSION_H
+#define YR_VERSION_H
 
-int main (int argc, char **argv)
-{
-  // make sure that versions defined in configure.ac and in
-  // libyara/include/yara/libyara.h are in sync.
+#define YR_MAJOR_VERSION   @PROJECT_VERSION_MAJOR@
+#define YR_MINOR_VERSION   @PROJECT_VERSION_MINOR@
+#define YR_MICRO_VERSION   @PROJECT_VERSION_PATCH@
 
-  return strcmp("REMOVE IN FAVOR OF version.h.in WHICH IS CONFIGURED BY CMAKE WITH CMAKE_PROJECT_VERSION_XXX", YR_VERSION);
-}
+#define version_str(s) _version_str(s)
+#define _version_str(s) #s
+
+// Version as a string
+#define YR_VERSION version_str(YR_MAJOR_VERSION) \
+    "." version_str(YR_MINOR_VERSION) \
+    "." version_str(YR_MICRO_VERSION)
+
+// Version as a single 4-byte hex number, e.g. 0x030401 == 3.4.1.
+#define YR_VERSION_HEX ((YR_MAJOR_VERSION << 16) | \
+    (YR_MINOR_VERSION << 8) | \
+    (YR_MICRO_VERSION << 0))
+
+#endif
