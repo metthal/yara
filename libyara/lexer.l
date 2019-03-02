@@ -145,8 +145,6 @@ static bool is_absolute_path(
 %option never-interactive
 %option yylineno
 %option prefix="yara_yy"
-
-%option verbose
 %option warn
 
 %x str

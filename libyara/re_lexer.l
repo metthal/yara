@@ -86,8 +86,6 @@ int read_escaped_char(
 %option never-interactive
 %option yylineno
 %option prefix="re_yy"
-
-%option verbose
 %option warn
 
 %x char_class

@@ -79,8 +79,6 @@ with noyywrap then we can remove this pragma.
 %option never-interactive
 %option yylineno
 %option prefix="hex_yy"
-
-%option verbose
 %option warn
 
 digit         [0-9]
