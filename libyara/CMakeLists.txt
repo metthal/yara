@@ -149,7 +149,7 @@ if(CUCKOO_MODULE)
 	target_link_libraries(libyara Jansson::Jansson)
 endif()
 
-if(DEX_MODULE)
+if(DEX_MODULE_DEBUG)
 	target_compile_definitions(libyara PUBLIC DEBUG_DEX_MODULE)
 endif()
 
