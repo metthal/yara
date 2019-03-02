@@ -1,4 +1,5 @@
 #!/bin/sh
-./bootstrap.sh
-./configure
-make
+mkdir -p build
+cd build
+cmake ..
+cmake --build . -- -j
