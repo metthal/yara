@@ -451,9 +451,9 @@ uint32_t load_encoded_field(
   if (field_name != NULL)
   {
     #ifdef DEBUG_DEX_MODULE
-    printf("[DEX]\tFIELD_NAME %s NAME_IDX 0x%lx\n",
+    printf("[DEX]\tFIELD_NAME %s NAME_IDX 0x%llx\n",
         field_name->c_string,
-        name_idx);
+        (uint64_t) name_idx);
     #endif
 
     set_sized_string(
@@ -476,10 +476,10 @@ uint32_t load_encoded_field(
   if (class_name != NULL)
   {
     #ifdef DEBUG_DEX_MODULE
-    printf("[DEX]\tCLASS_NAME %s CLASS_IDX 0x%lx DESCRIPTOR_IDX 0x%lx\n",
+    printf("[DEX]\tCLASS_NAME %s CLASS_IDX 0x%llx DESCRIPTOR_IDX 0x%llx\n",
         class_name->c_string,
-        class_idx,
-        descriptor_idx);
+        (uint64_t) class_idx,
+        (uint64_t) descriptor_idx);
     #endif
 
     set_sized_string(
@@ -586,7 +586,7 @@ uint32_t load_encoded_method(
     return 0;
 
   #ifdef DEBUG_DEX_MODULE
-  printf("[DEX]\tNAME_IDX 0x%lx\n", name_idx);
+  printf("[DEX]\tNAME_IDX 0x%llx\n", (uint64_t) name_idx);
   #endif
 
   #ifdef DEBUG_DEX_MODULE
@@ -603,9 +603,9 @@ uint32_t load_encoded_method(
   if (method_name != NULL)
   {
     #ifdef DEBUG_DEX_MODULE
-    printf("[DEX]\tMETHOD_NAME %s NAME_IDX 0x%lx\n",
+    printf("[DEX]\tMETHOD_NAME %s NAME_IDX 0x%llx\n",
         method_name->c_string,
-        name_idx);
+        (uint64_t) name_idx);
     #endif
 
     set_sized_string(
@@ -628,10 +628,10 @@ uint32_t load_encoded_method(
   if (class_name != NULL)
   {
     #ifdef DEBUG_DEX_MODULE
-    printf("[DEX]\tCLASS_NAME %s CLASS_IDX 0x%lx DESCRIPTOR_IDX:0x%lx\n",
+    printf("[DEX]\tCLASS_NAME %s CLASS_IDX 0x%llx DESCRIPTOR_IDX:0x%llx\n",
         class_name->c_string,
-        class_idx,
-        descriptor_idx);
+        (uint64_t) class_idx,
+        (uint64_t) descriptor_idx);
     #endif
 
     set_sized_string(
@@ -654,10 +654,10 @@ uint32_t load_encoded_method(
   if (proto_name != NULL)
   {
     #ifdef DEBUG_DEX_MODULE
-    printf("[DEX]\tPROTO_NAME %s CLASS_IDX 0x%lx DESCRIPTOR_IDX:0x%lx\n",
+    printf("[DEX]\tPROTO_NAME %s CLASS_IDX 0x%llx DESCRIPTOR_IDX:0x%llx\n",
         proto_name->c_string,
-        class_idx,
-        descriptor_idx);
+        (uint64_t) class_idx,
+        (uint64_t) descriptor_idx);
     #endif
 
     set_sized_string(
