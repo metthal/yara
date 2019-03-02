@@ -87,8 +87,6 @@ int read_escaped_char(
 %option yylineno
 %option prefix="re_yy"
 
-%option outfile="lex.yy.c"
-
 %option verbose
 %option warn
 

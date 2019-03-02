@@ -34,7 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <time.h>
 
 #include "../crypto.h"
-#if defined(HAVE_LIBCRYPTO)
+#if defined(USE_OPENSSL_CRYPTO)
 #include <openssl/safestack.h>
 #include <openssl/asn1.h>
 #include <openssl/bio.h>
@@ -1103,7 +1103,7 @@ static EXPORT_FUNCTIONS* pe_parse_exports(
 }
 
 
-#if defined(HAVE_LIBCRYPTO)
+#if defined(USE_OPENSSL_CRYPTO)
 
 static void pe_parse_certificates(
     PE* pe)
@@ -1351,7 +1351,7 @@ static void pe_parse_certificates(
   set_integer(counter, pe->object, "number_of_signatures");
 }
 
-#endif  // defined(HAVE_LIBCRYPTO)
+#endif  // defined(USE_OPENSSL_CRYPTO)
 
 
 static void pe_parse_header(
@@ -1820,9 +1820,9 @@ define_function(exports_ordinal)
   return_integer(0);
 }
 
-#if defined(HAVE_LIBCRYPTO) || \
-    defined(HAVE_WINCRYPT_H) || \
-    defined(HAVE_COMMONCRYPTO_COMMONCRYPTO_H)
+#if defined(USE_OPENSSL_CRYPTO) || \
+    defined(USE_WINCRYPT_CRYPTO) || \
+    defined(USE_COMMONCRYPTO_CRYPTO)
 
 //
 // Generate an import hash:
@@ -1951,7 +1951,7 @@ define_function(imphash)
   return_string(digest_ascii);
 }
 
-#endif  // defined(HAVE_LIBCRYPTO) || defined(HAVE_WINCRYPT_H)
+#endif  // defined(USE_OPENSSL_CRYPTO) || defined(USE_WINCRYPT_CRYPTO)
 
 
 define_function(imports)
@@ -2554,9 +2554,9 @@ begin_declarations;
     declare_function("toolid", "ii", "i", rich_toolid_version);
   end_struct("rich_signature");
 
-  #if defined(HAVE_LIBCRYPTO) || \
-      defined(HAVE_WINCRYPT_H) || \
-      defined(HAVE_COMMONCRYPTO_COMMONCRYPTO_H)
+  #if defined(USE_OPENSSL_CRYPTO) || \
+      defined(USE_WINCRYPT_CRYPTO) || \
+      defined(USE_COMMONCRYPTO_CRYPTO)
   declare_function("imphash", "", "s", imphash);
   #endif
 
@@ -2598,7 +2598,7 @@ begin_declarations;
 
   declare_integer("number_of_resources");
 
-  #if defined(HAVE_LIBCRYPTO)
+  #if defined(USE_OPENSSL_CRYPTO)
   begin_struct_array("signatures");
     declare_string("thumbprint");
     declare_string("issuer");
@@ -3011,7 +3011,7 @@ int module_load(
         pe_parse_header(pe, block->base, context->flags);
         pe_parse_rich_signature(pe, block->base);
 
-        #if defined(HAVE_LIBCRYPTO)
+        #if defined(USE_OPENSSL_CRYPTO)
         pe_parse_certificates(pe);
         #endif
 

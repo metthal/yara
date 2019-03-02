@@ -78,7 +78,7 @@ char yr_lowercase[256];
 char yr_altercase[256];
 
 
-#if defined(HAVE_LIBCRYPTO) && OPENSSL_VERSION_NUMBER < 0x10100000L
+#if defined(USE_OPENSSL_CRYPTO) && OPENSSL_VERSION_NUMBER < 0x10100000L
 
 // The OpenSSL library before version 1.1 requires some locks in order
 // to be thread-safe. These locks are initialized in yr_initialize
@@ -147,7 +147,7 @@ YR_API int yr_initialize(void)
   FAIL_ON_ERROR(yr_thread_storage_create(&yr_tidx_key));
   FAIL_ON_ERROR(yr_thread_storage_create(&yr_recovery_state_key));
 
-  #if defined HAVE_LIBCRYPTO && OPENSSL_VERSION_NUMBER < 0x10100000L
+  #if defined USE_OPENSSL_CRYPTO && OPENSSL_VERSION_NUMBER < 0x10100000L
 
   openssl_locks = (YR_MUTEX*) OPENSSL_malloc(
       CRYPTO_num_locks() * sizeof(YR_MUTEX));
@@ -158,15 +158,15 @@ YR_API int yr_initialize(void)
   CRYPTO_THREADID_set_callback(_thread_id);
   CRYPTO_set_locking_callback(_locking_function);
 
-  #elif defined(HAVE_WINCRYPT_H)
+  #elif defined(USE_WINCRYPT_CRYPTO)
 
   if (!CryptAcquireContext(&yr_cryptprov, NULL, NULL, PROV_RSA_AES, CRYPT_VERIFYCONTEXT)) {
     return ERROR_INTERNAL_FATAL_ERROR;
   }
 
-  #elif defined(HAVE_COMMON_CRYPTO)
+  #elif defined(USE_COMMONCRYPTO_CRYPTO)
 
-  ...
+  // ...
 
   #endif
 
@@ -206,7 +206,7 @@ YR_DEPRECATED_API void yr_finalize_thread(void)
 
 YR_API int yr_finalize(void)
 {
-  #if defined HAVE_LIBCRYPTO && OPENSSL_VERSION_NUMBER < 0x10100000L
+  #if defined USE_OPENSSL_CRYPTO && OPENSSL_VERSION_NUMBER < 0x10100000L
   int i;
   #endif
 
@@ -220,7 +220,7 @@ YR_API int yr_finalize(void)
   if (init_count > 0)
     return ERROR_SUCCESS;
 
-  #if defined HAVE_LIBCRYPTO && OPENSSL_VERSION_NUMBER < 0x10100000L
+  #if defined USE_OPENSSL_CRYPTO && OPENSSL_VERSION_NUMBER < 0x10100000L
 
   for (i = 0; i < CRYPTO_num_locks(); i ++)
     yr_mutex_destroy(&openssl_locks[i]);
@@ -229,7 +229,7 @@ YR_API int yr_finalize(void)
   CRYPTO_THREADID_set_callback(NULL);
   CRYPTO_set_locking_callback(NULL);
 
-  #elif defined(HAVE_WINCRYPT_H)
+  #elif defined(USE_WINCRYPT_CRYPTO)
 
   CryptReleaseContext(yr_cryptprov, 0);
 

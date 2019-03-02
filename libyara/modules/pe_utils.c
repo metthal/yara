@@ -39,7 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <yara/pe_utils.h>
 #include <yara/pe.h>
 
-#if HAVE_LIBCRYPTO
+#if USE_OPENSSL_CRYPTO
 #include <openssl/asn1.h>
 #endif
 
@@ -301,7 +301,7 @@ time_t timegm(
 #endif // HAVE__MKGMTIME
 #endif // !HAVE_TIMEGM
 
-#if HAVE_LIBCRYPTO
+#if USE_OPENSSL_CRYPTO
 
 // Taken from http://stackoverflow.com/questions/10975542/asn1-time-conversion
 // and cleaned up. Also uses timegm(3) instead of mktime(3).

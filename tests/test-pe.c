@@ -115,9 +115,9 @@ int main(int argc, char** argv)
       }",
       "tests/data/tiny");
 
-  #if defined(HAVE_LIBCRYPTO) || \
-      defined(HAVE_WINCRYPT_H) || \
-      defined(HAVE_COMMONCRYPTO_COMMONCRYPTO_H)
+  #if defined(USE_OPENSSL_CRYPTO) || \
+      defined(USE_WINCRYPT_CRYPTO) || \
+      defined(USE_COMMONCRYPTO_CRYPTO)
 
   assert_true_rule_file(
       "import \"pe\" \
@@ -129,7 +129,7 @@ int main(int argc, char** argv)
 
   #endif
 
-  #if defined(HAVE_LIBCRYPTO)
+  #if defined(USE_OPENSSL_CRYPTO)
 
   assert_true_rule_file(
       "import \"pe\" \

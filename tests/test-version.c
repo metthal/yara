@@ -35,5 +35,5 @@ int main (int argc, char **argv)
   // make sure that versions defined in configure.ac and in
   // libyara/include/yara/libyara.h are in sync.
 
-  return strcmp(PACKAGE_VERSION, YR_VERSION);
+  return strcmp("REMOVE IN FAVOR OF version.h.in WHICH IS CONFIGURED BY CMAKE WITH CMAKE_PROJECT_VERSION_XXX", YR_VERSION);
 }

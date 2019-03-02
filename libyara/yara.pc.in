@@ -1,13 +1,13 @@
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-includedir=@includedir@
-libdir=@libdir@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=@CMAKE_INSTALL_BINDIR@
+includedir=@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_LIBDIR@
 
 Name: yara
 Description: YARA library
 URL: https://virustotal.github.io/yara/
-Version: @PACKAGE_VERSION@
-Requires.private: @PC_REQUIRES_PRIVATE@
+Version: @PROJECT_VERSION@
+Requires.private: @PKG_CONFIG_REQS@
 Cflags: -I${includedir}
 Libs: -L${libdir} -lyara
-Libs.private: @PC_LIBS_PRIVATE@ @PTHREAD_LIBS@
+Libs.private: @PKG_CONFIG_LIBS@

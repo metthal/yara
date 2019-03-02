@@ -115,7 +115,7 @@ char *ord_lookup(
     uint16_t ord);
 
 
-#if HAVE_LIBCRYPTO
+#if USE_OPENSSL_CRYPTO
 #include <openssl/asn1.h>
 time_t ASN1_get_time_t(ASN1_TIME* time);
 #endif
