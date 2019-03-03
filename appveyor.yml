@@ -37,18 +37,8 @@ install:
 build_script:
   - cmd: mkdir build
   - cmd: cd build
-  - cmd: |-
-         if "%TARGET%" == "cygwin" (
-           C:\cygwin64\bin\bash -e -l -c "cmake ${CMAKE_OPTS} -DYARA_TESTS=ON .."
-         ) else (
-           cmake %CMAKE_OPTS% -DYARA_TESTS=ON ..
-         )
-  - cmd: |-
-         if "%TARGET%" == "cygwin" (
-           C:\cygwin64\bin\bash -e -l -c "cmake --build . -- -j"
-         ) else (
-           cmake --build . --config %configuration% -- -m
-         )
+  - cmd: if "%TARGET%" == "cygwin" ( C:\cygwin64\bin\bash -e -l -c "cmake ${CMAKE_OPTS} -DYARA_TESTS=ON .." ) else ( cmake %CMAKE_OPTS% -DYARA_TESTS=ON .. )
+  - cmd: if "%TARGET%" == "cygwin" ( C:\cygwin64\bin\bash -e -l -c "cmake --build . -- -j" ) else ( cmake --build . --config %configuration% -- -m )
 
 test_script:
   - cmd: ctest -V
