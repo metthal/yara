@@ -37,17 +37,17 @@ for:
   - matrix:
       only:
         - TARGET: cygwin
-    install:
-      - cmd: C:\cygwin64\setup-x86_64.exe --quiet-mode --no-shortcuts --upgrade-also --packages cygwin-devel,gcc-core,file-devel,jansson,make,openssl-devel,pkg-config
+  #install:
+  #  - cmd: C:\cygwin64\setup-x86_64.exe --quiet-mode --no-shortcuts --upgrade-also --packages cygwin-devel,gcc-core,file-devel,jansson,make,openssl-devel,pkg-config
     build_script:
-      - cmd: C:\cygwin64\bin\bash -e -l -c "./build.sh"
+      - cmd: C:\cygwin64\bin\bash -e -l -c "cd c:/projects/yara && ./build.sh"
   - matrix:
       only:
         - TARGET: vs2015
     build_script:
       - cmd: mkdir build
       - cmd: cd build
-      - cmd: cmake %CMAKE_OPTS% -DYARA_TESTS=ON ..
+      - cmd: cmake %CMAKE_OPTS% ..
       - cmd: cmake --build . --config %configuration% -- -m
 
 test_script:
