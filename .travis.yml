@@ -3,7 +3,7 @@ language: c
 matrix:
   include:
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       env: CMAKE_OPTS="-DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON -DYARA_ADDRESS_SANITIZER=ON"
       # The certificate for scan.coverity.com is too new and is not recognized by
@@ -14,7 +14,7 @@ matrix:
         sudo apt-get update
         sudo apt-get install -y bison flex libjansson-dev libmagic-dev libssl-dev
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       env: CMAKE_OPTS="-DCMAKE_C_FLAGS=-m32 -DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON"
       install: |
@@ -24,14 +24,14 @@ matrix:
         sudo apt-get upgrade -y gcc
         sudo apt-get install -y bison flex gcc-multilib libjansson-dev:i386 libmagic-dev:i386 libssl-dev:i386
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       env: CMAKE_OPTS="-DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
       install: |
         sudo apt-get update
         sudo apt-get install -y gcc-mingw-w64
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       env: CMAKE_OPTS="-DCMAKE_C_COMPILER=i686-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
       install: |
