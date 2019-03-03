@@ -5,7 +5,9 @@ matrix:
     - os: linux
       dist: xenial
       sudo: required
-      env: CMAKE_OPTS="-DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON -DYARA_ADDRESS_SANITIZER=ON"
+      env:
+          - CMAKE_OPTS="-DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON -DYARA_ADDRESS_SANITIZER=ON"
+          - RUN_TESTS=1
       # The certificate for scan.coverity.com is too new and is not recognized by
       # wget. This command adds the certificate to /etc/ssl/certs/ca-certificates.crt
       # See: https://github.com/travis-ci/travis-ci/issues/6142
@@ -16,7 +18,9 @@ matrix:
     - os: linux
       dist: xenial
       sudo: required
-      env: CMAKE_OPTS="-DCMAKE_C_FLAGS=-m32 -DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON"
+      env:
+          - CMAKE_OPTS="-DCMAKE_C_FLAGS=-m32 -DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON"
+          - RUN_TESTS=1
       install: |
         sudo dpkg --add-architecture i386 && sudo rm -rf /etc/apt/sources.list.d/
         sudo apt-get update
@@ -26,14 +30,16 @@ matrix:
     - os: linux
       dist: xenial
       sudo: required
-      env: CMAKE_OPTS="-DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
+      env:
+          - CMAKE_OPTS="-DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
       install: |
         sudo apt-get update
         sudo apt-get install -y gcc-mingw-w64
     - os: linux
       dist: xenial
       sudo: required
-      env: CMAKE_OPTS="-DCMAKE_C_COMPILER=i686-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
+      env:
+          - CMAKE_OPTS="-DCMAKE_C_COMPILER=i686-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
       install: |
         sudo apt-get update
         sudo apt-get install -y gcc-mingw-w64
@@ -44,17 +50,12 @@ matrix:
     - os: osx
       osx_image: xcode9.2
 
-script: |
-  set -xe
-  rm -rf build && mkdir build
-  cd build
-  cmake ${CMAKE_OPTS} ..
-  cmake --build . -- -j
-  case "$CMAKE_OPTS" in
-    *Windows*) ;;
-    *) ctest -V ;;
-  esac
-  set +xe
+script:
+  - rm -rf build && mkdir build
+  - cd build
+  - cmake ${CMAKE_OPTS} ..
+  - cmake --build . -- -j
+  - if [ $RUN_TESTS -eq 1 ]; then ctest -V; fi
 
 #env:
 #  global:
