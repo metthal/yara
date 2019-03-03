@@ -22,7 +22,7 @@ matrix:
         - CMAKE_OPTS="-DCMAKE_C_FLAGS=-m32 -DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON"
         - RUN_TESTS=true
       install:
-        - sudo dpkg --add-architecture i386
+        - sudo dpkg --add-architecture i386 && sudo rm -rf /etc/apt/sources.list.d/
         - sudo apt-get update
         - sudo apt-get remove -y $(sudo dpkg --get-selections | grep libmagic | cut -f1)
         - sudo apt-get install -y bison flex gcc-multilib libjansson-dev:i386 libmagic-dev:i386 libssl-dev:i386
