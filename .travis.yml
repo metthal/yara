@@ -22,7 +22,7 @@ matrix:
         - CMAKE_OPTS="-DCMAKE_C_FLAGS=-m32 -DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON"
         - RUN_TESTS=1
       install: |
-        sudo dpkg --add-architecture i386 && sudo rm -rf /etc/apt/sources.list.d/
+        sudo dpkg --add-architecture i386
         sudo apt-get update
         sudo apt-get remove postgresql-9.3
         sudo apt-get upgrade -y gcc
@@ -49,6 +49,7 @@ matrix:
         - PATH="/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:$PATH"
         - CMAKE_OPTS="-DCMAKE_INCLUDE_PATH=/usr/local/opt/flex/include -DCMAKE_LIBRARY_PATH=/usr/local/opt/flex/lib;/usr/local/opt/bison/lib"
       install: |
+        brew update
         brew install flex bison
     - os: osx
       osx_image: xcode8.3
@@ -63,6 +64,7 @@ matrix:
         - PATH="/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:$PATH"
         - CMAKE_OPTS="-DCMAKE_INCLUDE_PATH=/usr/local/opt/flex/include -DCMAKE_LIBRARY_PATH=/usr/local/opt/flex/lib;/usr/local/opt/bison/lib"
       install: |
+        brew update
         brew install flex bison
 
 script:
