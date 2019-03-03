@@ -45,8 +45,7 @@ matrix:
       osx_image: xcode9.2
 
 script: |
-  rvm get head  # Workaround for Travis CI issue https://github.com/travis-ci/travis-ci/issues/6307
-  set -e
+  set -xe
   rm -rf build && mkdir build
   cd build
   cmake ${CMAKE_OPTS} ..
@@ -55,7 +54,7 @@ script: |
     *Windows*) ;;
     *) ctest -V ;;
   esac
-  set +e
+  set +xe
 
 #env:
 #  global:
