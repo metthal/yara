@@ -33,6 +33,7 @@ environment:
 install:
   - choco install -Y winflexbison3
   - if "%TARGET%" == "cygwin" (C:\cygwin64\setup-x86_64.exe --quiet-mode --no-shortcuts --upgrade-also --packages cygwin-devel,gcc-core,file-devel,jansson,make,openssl-devel,pkg-config)
+  - if "%TARGET%" == "cygwin" (set PATH=C:\cygwin64\bin;%PATH%)
 
 build_script:
   - mkdir build
