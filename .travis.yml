@@ -25,7 +25,7 @@ matrix:
         - sudo dpkg --add-architecture i386
         - sudo rm -rf /etc/apt/sources.list.d/
         - sudo apt-get update
-        - sudo apt-get remove -y postgresql $(sudo dpkg --get-selections | grep libmagic | cut -f1)
+        - sudo apt-get remove -y postgresql $(sudo dpkg --get-selections | grep libmagic | cut -f1) file
         - sudo apt-get install -y bison flex gcc-multilib libjansson-dev:i386 libssl-dev:i386 #libmagic-dev:i386 
     - os: linux
       dist: xenial
