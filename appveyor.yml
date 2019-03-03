@@ -35,7 +35,7 @@ for:
       only:
         - TARGET: cygwin
     install:
-      - cmd: C:\cygwin64\setup-x86_64.exe --quiet-mode --no-shortcuts --upgrade-also --packages bison,cygwin-devel,flex,gcc-core,file-devel,jansson,make,openssl-devel,pkg-config
+      - cmd: C:\cygwin64\setup-x86_64.exe --quiet-mode --no-shortcuts --upgrade-also --packages bison,cmake,cygwin-devel,flex,gcc-core,file-devel,libjansson-devel,make,pkg-config
     build_script:
       - cmd: C:\cygwin64\bin\bash -e -l -c "cd c:/projects/yara && ./build.sh"
   - matrix:
