@@ -96,7 +96,7 @@ if(MSVC)
 	target_compile_options(libyara PRIVATE /W3)
 	target_compile_definitions(libyara PUBLIC _CRT_SECURE_NO_WARNINGS)
 else()
-	target_compile_options(libyara PRIVATE -Wall -Werror)
+	target_compile_options(libyara PRIVATE -Wall)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
