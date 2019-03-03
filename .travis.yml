@@ -28,6 +28,7 @@ matrix:
         #- sudo apt-get remove -y postgresql $(sudo dpkg --get-selections | grep libmagic | cut -f1) file
         #- sudo apt-get remove -y postgresql $(sudo dpkg --get-selections | grep libmagic | cut -f1) file
         #- sudo apt-get clean
+        - sudo apt-get remove -y magic openssl
         - sudo apt-get install -y bison flex gcc-multilib libjansson-dev:i386 libssl-dev:i386
         - sudo apt-get install -y libmagic-dev:i386
     - os: linux
