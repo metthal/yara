@@ -6,8 +6,8 @@ matrix:
       dist: xenial
       sudo: required
       env:
-          - CMAKE_OPTS="-DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON -DYARA_ADDRESS_SANITIZER=ON"
-          - RUN_TESTS=1
+        - CMAKE_OPTS="-DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON -DYARA_ADDRESS_SANITIZER=ON"
+        - RUN_TESTS=1
       # The certificate for scan.coverity.com is too new and is not recognized by
       # wget. This command adds the certificate to /etc/ssl/certs/ca-certificates.crt
       # See: https://github.com/travis-ci/travis-ci/issues/6142
@@ -19,8 +19,8 @@ matrix:
       dist: xenial
       sudo: required
       env:
-          - CMAKE_OPTS="-DCMAKE_C_FLAGS=-m32 -DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON"
-          - RUN_TESTS=1
+        - CMAKE_OPTS="-DCMAKE_C_FLAGS=-m32 -DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON"
+        - RUN_TESTS=1
       install: |
         sudo dpkg --add-architecture i386 && sudo rm -rf /etc/apt/sources.list.d/
         sudo apt-get update
@@ -31,7 +31,7 @@ matrix:
       dist: xenial
       sudo: required
       env:
-          - CMAKE_OPTS="-DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
+        - CMAKE_OPTS="-DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
       install: |
         sudo apt-get update
         sudo apt-get install -y gcc-mingw-w64
@@ -39,16 +39,31 @@ matrix:
       dist: xenial
       sudo: required
       env:
-          - CMAKE_OPTS="-DCMAKE_C_COMPILER=i686-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
+        - CMAKE_OPTS="-DCMAKE_C_COMPILER=i686-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
       install: |
         sudo apt-get update
         sudo apt-get install -y gcc-mingw-w64
     - os: osx
       osx_image: xcode7.3
+      env:
+        - PATH="/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:$PATH"
+        - CMAKE_OPTS="-DCMAKE_INCLUDE_PATH=/usr/local/opt/flex/include -DCMAKE_LIBRARY_PATH=/usr/local/opt/flex/lib;/usr/local/opt/bison/lib"
+      install: |
+        brew install flex bison
     - os: osx
       osx_image: xcode8.3
+      env:
+        - PATH="/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:$PATH"
+        - CMAKE_OPTS="-DCMAKE_INCLUDE_PATH=/usr/local/opt/flex/include -DCMAKE_LIBRARY_PATH=/usr/local/opt/flex/lib;/usr/local/opt/bison/lib"
+      install: |
+        brew install flex bison
     - os: osx
       osx_image: xcode9.2
+      env:
+        - PATH="/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:$PATH"
+        - CMAKE_OPTS="-DCMAKE_INCLUDE_PATH=/usr/local/opt/flex/include -DCMAKE_LIBRARY_PATH=/usr/local/opt/flex/lib;/usr/local/opt/bison/lib"
+      install: |
+        brew install flex bison
 
 script:
   - rm -rf build && mkdir build
