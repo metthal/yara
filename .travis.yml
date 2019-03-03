@@ -32,7 +32,7 @@ matrix:
         - sudo apt-get install -y bison flex gcc-multilib libjansson-dev:i386 libssl-dev:i386
         - sudo apt-get download libmagic-dev:i386 libmagic1:i386
         - sudo dpkg -i libmagic1_*.deb
-        - sudo dpkg -i libmagic-dev_*.deb
+        - sudo dpkg -i --force-overwrite libmagic-dev_*.deb
     - os: linux
       dist: xenial
       sudo: required
