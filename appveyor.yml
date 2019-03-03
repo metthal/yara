@@ -7,28 +7,27 @@ pull_requests:
 
 environment:
   matrix:
+  - TARGET: vs2015
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    CMAKE_OPTS: -G"Visual Studio 14 2015"
+    configuration: Release
+    platform: x86
+  - TARGET: vs2015
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    CMAKE_OPTS: -G"Visual Studio 14 2015"
+    configuration: Debug
+    platform: x86
+  - TARGET: vs2015
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    CMAKE_OPTS: -G"Visual Studio 14 2015 Win64"
+    platform: x64
+    configuration: Release
+  - TARGET: vs2015
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    CMAKE_OPTS: -G"Visual Studio 14 2015 Win64"
+    platform: x64
+    configuration: Debug
   - TARGET: cygwin
-    CMAKE_OPTS: "-G\"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Release -DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON"
-  - TARGET: vs2015
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    CMAKE_OPTS: -G"Visual Studio 14 2015"
-    configuration: Release
-    platform: x86
-  - TARGET: vs2015
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    CMAKE_OPTS: -G"Visual Studio 14 2015"
-    configuration: Debug
-    platform: x86
-  - TARGET: vs2015
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    CMAKE_OPTS: -G"Visual Studio 14 2015 Win64"
-    platform: x64
-    configuration: Release
-  - TARGET: vs2015
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    CMAKE_OPTS: -G"Visual Studio 14 2015 Win64"
-    platform: x64
-    configuration: Debug
 
 for:
   - matrix:
