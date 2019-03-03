@@ -23,14 +23,14 @@ matrix:
         - RUN_TESTS=true
       install:
         - sudo dpkg --add-architecture i386
-        #- sudo rm -rf /etc/apt/sources.list.d/
+        - sudo rm -rf /etc/apt/sources.list.d/
         - sudo apt-get update
         #- sudo apt-get remove -y postgresql $(sudo dpkg --get-selections | grep libmagic | cut -f1) file
         #- sudo apt-get remove -y postgresql $(sudo dpkg --get-selections | grep libmagic | cut -f1) file
         #- sudo apt-get clean
         - sudo apt-get remove -y libmagic1 libmagic-dev openssl libssl-dev
         - sudo apt-get install -y bison flex gcc-multilib libjansson-dev:i386 libssl-dev:i386
-        - sudo apt-get install -y -f libmagic-dev:i386
+        - sudo apt-get install -y -f libmagic-dev:i386 libmagic1:i386
     - os: linux
       dist: xenial
       sudo: required
