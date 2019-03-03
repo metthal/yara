@@ -4,75 +4,69 @@ matrix:
   include:
     - os: linux
       dist: xenial
-      sudo: required
       env:
         - CMAKE_OPTS="-DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON -DYARA_ADDRESS_SANITIZER=ON"
-        - RUN_TESTS=1
+        - RUN_TESTS=true
       # The certificate for scan.coverity.com is too new and is not recognized by
       # wget. This command adds the certificate to /etc/ssl/certs/ca-certificates.crt
       # See: https://github.com/travis-ci/travis-ci/issues/6142
       #before_install: echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
-      install: |
-        sudo apt-get update
-        sudo apt-get install -y bison flex libjansson-dev libmagic-dev libssl-dev
+      install:
+        - apt-get update
+        - apt-get install -y bison flex libjansson-dev libmagic-dev libssl-dev
     - os: linux
       dist: xenial
-      sudo: required
       env:
         - CMAKE_OPTS="-DCMAKE_C_FLAGS=-m32 -DCUCKOO_MODULE=ON -DMAGIC_MODULE=ON -DYARA_TESTS=ON"
-        - RUN_TESTS=1
-      install: |
-        sudo dpkg --add-architecture i386
-        sudo apt-get update
-        sudo apt-get remove postgresql-9.3
-        sudo apt-get upgrade -y gcc
-        sudo apt-get install -y bison flex gcc-multilib libjansson-dev:i386 libmagic-dev:i386 libssl-dev:i386
+        - RUN_TESTS=true
+      install:
+        - dpkg --add-architecture i386
+        - apt-get update
+        - apt-get install -y bison flex gcc-multilib libjansson-dev:i386 libmagic-dev:i386 libssl-dev:i386
     - os: linux
       dist: xenial
-      sudo: required
       env:
         - CMAKE_OPTS="-DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
-      install: |
-        sudo apt-get update
-        sudo apt-get install -y gcc-mingw-w64
+      install:
+        - apt-get update
+        - apt-get install -y gcc-mingw-w64
     - os: linux
       dist: xenial
-      sudo: required
       env:
         - CMAKE_OPTS="-DCMAKE_C_COMPILER=i686-w64-mingw32-gcc -DCMAKE_SYSTEM_NAME=Windows"
-      install: |
-        sudo apt-get update
-        sudo apt-get install -y gcc-mingw-w64
+      install:
+        - apt-get update
+        - apt-get install -y gcc-mingw-w64
     - os: osx
       osx_image: xcode7.3
       env:
         - PATH="/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:$PATH"
         - CMAKE_OPTS="-DCMAKE_INCLUDE_PATH=/usr/local/opt/flex/include -DCMAKE_LIBRARY_PATH=/usr/local/opt/flex/lib;/usr/local/opt/bison/lib"
-      install: |
-        brew update
-        brew install flex bison
+      install:
+        - brew update
+        - brew install flex bison
     - os: osx
       osx_image: xcode8.3
       env:
         - PATH="/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:$PATH"
         - CMAKE_OPTS="-DCMAKE_INCLUDE_PATH=/usr/local/opt/flex/include -DCMAKE_LIBRARY_PATH=/usr/local/opt/flex/lib;/usr/local/opt/bison/lib"
-      install: |
-        brew install flex bison
+      install:
+        - brew install flex bison
     - os: osx
       osx_image: xcode9.2
       env:
         - PATH="/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:$PATH"
         - CMAKE_OPTS="-DCMAKE_INCLUDE_PATH=/usr/local/opt/flex/include -DCMAKE_LIBRARY_PATH=/usr/local/opt/flex/lib;/usr/local/opt/bison/lib"
-      install: |
-        brew update
-        brew install flex bison
+      install:
+        - brew update
+        - brew install flex bison
 
 script:
   - rm -rf build && mkdir build
   - cd build
   - cmake ${CMAKE_OPTS} ..
   - cmake --build . -- -j
-  - if [ $RUN_TESTS -eq 1 ]; then ctest -V; fi
+  - if [ "$RUN_TESTS" = "true" ]; then ctest -V; fi
 
 #env:
 #  global:
