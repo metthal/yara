@@ -50,6 +50,7 @@ for:
       - cmd: cmake --build . --config %configuration% -- -m
 
 test_script:
+  - cmd: cd C:\projects\yara\build
   - cmd: ctest -V
 
 # Uncomment the lines below for enabling Remote Desktop in the Appveyor. This
