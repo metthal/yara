@@ -2,5 +2,5 @@
 
 mkdir -p build
 cd build
-cmake ${CMAKE_OPTS} -DYARA_TESTS=ON ..
+cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DYARA_TESTS=ON ..
 cmake --build . -- -j
