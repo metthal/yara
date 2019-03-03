@@ -30,7 +30,7 @@ matrix:
         #- sudo apt-get clean
         - sudo apt-get remove -y libmagic1 libmagic-dev openssl libssl-dev
         - sudo apt-get install -y bison flex gcc-multilib libjansson-dev:i386 libssl-dev:i386
-        - sudo apt-get install -y libmagic-dev:i386
+        - sudo apt-get install -y -f libmagic-dev:i386
     - os: linux
       dist: xenial
       sudo: required
