@@ -32,7 +32,7 @@ environment:
 
 install:
   - choco install -Y winflexbison3
-  - if "%TARGET%" = "cygwin" (C:\cygwin64\setup-x86_64.exe --no-shortcuts --upgrade-also --packages cygwin-devel,gcc-core,file-devel,jansson,make,openssl-devel,pkg-config)
+  - if "%TARGET%" == "cygwin" (C:\cygwin64\setup-x86_64.exe --no-shortcuts --upgrade-also --packages cygwin-devel,gcc-core,file-devel,jansson,make,openssl-devel,pkg-config)
 
 build_script:
   - mkdir build
