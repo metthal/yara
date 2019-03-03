@@ -39,7 +39,7 @@ for:
     build_script:
       - cmd: C:\cygwin64\bin\bash -e -l -c "cd c:/projects/yara && ./build.sh"
     test_script:
-      - cmd: C:\cygwin64\bin\bash -e -l -c "cd c:/projects/yara && ctest -V"
+      - cmd: C:\cygwin64\bin\bash -e -l -c "cd c:/projects/yara/build && ctest -V"
   - matrix:
       only:
         - TARGET: vs2015
