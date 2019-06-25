@@ -2465,7 +2465,6 @@ begin_declarations;
   declare_integer("RESOURCE_TYPE_HTML");
   declare_integer("RESOURCE_TYPE_MANIFEST");
 
-
   declare_integer("is_pe");
   declare_integer("machine");
   declare_integer("number_of_sections");
